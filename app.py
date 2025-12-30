@@ -1,16 +1,15 @@
 import sys
-import asyncio
 sys.path.append('my_modules')
-
+import asyncio
 import myModule
-from myModule import satu,dua,list_dir
+from myModule import read_csv
 
-async def test():
-    await satu()
-    await dua()
-    await list_dir()
+df = read_csv()
+print(df)
+# async def test():
+#     await satu()
+#     await dua() 
 
-
-asyncio.run(test())
+# asyncio.run(test())
 
 
