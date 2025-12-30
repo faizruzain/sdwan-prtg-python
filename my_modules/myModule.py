@@ -1,17 +1,17 @@
 import os
 import pandas as pd
+import requests
 
-def read_csv():
+async def read_csv():
     try:
         script_dir = os.path.dirname(__file__)
         rel_path = "../csv/device_id.csv"
         abs_file_path = os.path.join(script_dir, rel_path)
-        # print(abs_file_path)
         df = pd.read_csv(abs_file_path)
-        return df
-    except error:
-        print(error)
-    finally:
+        print(df)
+    except NameError:
+        print(NameError)
+    else:
         print("Reading csv file: Done")
     # print(df)
     # print("\n")
@@ -19,14 +19,18 @@ def read_csv():
     # for _ in df.itertuples(index=False):
     #     print(_[0]) #kalau mau mulai dari index 0, tambahkan argumen index=False pada .itertuples()
 
-
-
+async def coba():
+    try:
+        # r = requests.get("https://dummyjson.com/PRTG?delay=1000")
+        r = requests.get("https://api.github.com")
+        print(r.json())
+    except NameError:
+        print(NameError)
+    else:
+        print("HTTP Get Request: Done")
    
 
 
-class PRTG():
-    def __init__(self,csv_file):
-        self.csv_file = csv_file
 
 
 
