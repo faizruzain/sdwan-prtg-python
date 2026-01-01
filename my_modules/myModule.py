@@ -38,37 +38,26 @@ async def get_CPU_usage(df, user_input):
         count = 1
         CPU_usage = df.get(["hostname", "cpu_id"])
         # print(f'{count}/{rows}')
-
+        table = []
+        headers = ['hostname', 'cpu_id', 'status']
         for _ in CPU_usage.itertuples(index=False):
-            print(f'{count}/{rows}')
             # make API req
             # url = f'https://10.164.1.101/api/historicdata.csv?id={_[1]}&avg=86400&sdate=2025-12-01-00-00-00&edate=2025-12-30-23-59-59&apitoken={my_token}'
             # r = requests.get(url, verify=False)
             r = requests.get(f'https://jsonplaceholder.typicode.com/users/9')
             if r.status_code == 200:
                 # print(r)
-
-                # print results
-                print(tabulate([
-                    [_[0], _[1], 'Done']
-                ],
-                    headers=['hostname', 'cpu_id', 'status'],
-                    tablefmt="github"
-                    )
-                )
+                table.append([_[0], _[1], 'Done'])
+                print(tabulate(table, headers, tablefmt='simple_grid'))
+                print(f'{count} of {rows}')
                 count += 1
                 print('\n')
             elif r.status_code != 200:
                 count += 1
                 print(f'The sensor ID: {_[1]} is not right.')
                 print('\n')
-                print(tabulate([
-                    [_[0], _[1], 'NOK']
-                ],
-                    headers=['hostname', 'cpu_id', 'status'],
-                    tablefmt="github"
-                    )
-                )
+                table.append([_[0], _[1], 'Skipped'])
+                print(tabulate(table, headers, tablefmt='simple_grid'))
                 print('\n')
                 continue
             else:
