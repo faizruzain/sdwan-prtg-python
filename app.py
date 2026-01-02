@@ -22,20 +22,14 @@ from myModule import read_csv, get_CPU_usage, get_temperature_records, get_memor
 
 # asyncio.run(main())
 
-
-# r = requests.get('https://cdn.wsform.com/wp-content/uploads/2020/06/color_srgb.csv')
-# print(r.status_code)
-# print(r.content)
-url = 'https://cdn.wsform.com/wp-content/uploads/2020/06/color_srgb.csv'
-url2 = 'https://afr-sdwan.free.beeceptor.com/api/prtg-csv'
-df = pd.read_csv(url2)
-print(df)
-df.to_csv('output_csv/beeceptor.csv')
-
-# df = pd.read_csv('cleaned_csv/temp.csv')
+# url = 'https://cdn.wsform.com/wp-content/uploads/2020/06/color_srgb.csv'
+# url2 = 'https://afr-sdwan.free.beeceptor.com/api/prtg-csv'
+# df = pd.read_csv(url2)
 # print(df)
-# df.to_csv('output_csv/traffic.csv')
-# print(r.text)
-# with open('cuki.json', 'w') as f:
-#     json.dump(r, f)
-# encoding='unicode_escape'
+# df.to_csv('output_csv/beeceptor.csv')
+
+device_id = pd.read_csv('csv/device_id_dev.csv').get(['hostname', 'cpu_id'])
+df = pd.read_csv('cleaned_csv/cpu.csv')
+average = df.get(['CPU 7(RAW)']).mean().round()
+device_id.insert(2, 'average_cpu_usage', average)
+print(device_id)
