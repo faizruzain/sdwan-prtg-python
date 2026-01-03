@@ -38,25 +38,31 @@ async def get_things_done_fast(df, user_input):
         count = 1
         task_lists = df.get([0, user_input])
         # print(f'{count}/{rows}')
+        what_to_get = ''
         table = []
-        headers = ['hostname', '','', 'status']
+        headers = ['hostname', 'status']
         if user_input == 1:
-            headers[1] = 'cpu_id'
-            headers[2] = 'average_cpu'
+            what_to_get = 'CPU 7(RAW)'
+            headers.insert(1, 'cpu_id')
+            headers.insert(2, 'average_cpu')
         elif user_input == 2:
-            headers[1] = 'mem_id'
-            headers[2] = 'average_memory'
+            what_to_get = 'Percent Available Memory 1 (Processor)(RAW)'
+            headers.insert(1, 'mem_id')
+            headers.insert(2, 'average_memory')
         elif user_input == 3:
-            headers[1] = 'ping_id'
-            headers[2] = 'average_ping'
+            what_to_get = ['Ping Time(RAW)', 'Minimum(RAW)', 'Maximum(RAW)', 'Packet Loss(RAW)']
+            headers.insert(1, 'ping_id')
+            headers.insert(2, 'average_ping')
         elif user_input == 4:
-            headers[1] = 'temp_id'
-            headers[2] = 'average_temperature'
+            what_to_get = 'Temperature Slot 6 - Temp: CP-CPU(RAW)'
+            headers.insert(1, 'temp_id')
+            headers.insert(2, 'average_temperature')
             headers.insert(3, 'min')
             headers.insert(4, 'max')
         elif user_input == 5:
-            headers[1] = 'traffic_id'
-            headers[2] = 'average_traffic'
+            what_to_get = ['Traffic Total (Volume)(RAW)', 'raffic Total (Speed)(RAW)', 'Traffic In (Volume)(RAW)', 'Traffic Out (Volume)(RAW)']
+            headers.insert(1, 'traffic_id')
+            headers.insert(2, 'average_traffic')
         gathered_val = []
 
         for _ in task_lists.itertuples(index=False):
@@ -68,6 +74,7 @@ async def get_things_done_fast(df, user_input):
             r = requests.get(url2, timeout=10)
             r_f = StringIO(r.text)
             r_df = pd.read_csv(r_f)
+            # what_to_get
             r_df = r_df.get('cpu_usage')
             r_df = round(r_df.mean())
             gathered_val.append(r_df)
@@ -91,7 +98,7 @@ async def get_things_done_fast(df, user_input):
                 break
         # df.insert(2, headers[1], gathered_val)
         print(f'{headers[1]} {gathered_val}')
-        final_data = hostnames.insert(1, headers[1], gathered_val)
+        final_data = pd.DataFrame(hostnames).insert(1, headers[1], gathered_val)
         print(final_data)
     except NameError:
         print(NameError)
