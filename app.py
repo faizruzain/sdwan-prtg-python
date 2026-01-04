@@ -23,12 +23,14 @@ async def main():
 
 asyncio.run(main())
 
-# Temp
-# files = listdir('output_csv')
-# print(len(files))
-# for file in files:
-#     df = pd.read_csv(f'output_csv/{file}', index_col=False, encoding='unicode_escape')
-#     df.to_csv(f'cleaned_csv/{file}', index_label=None, index=False, encoding='utf-8')
-#     print(f'file name: {file}')
-#     print(df)
-#     print('\n')
+# t = []
+# df = pd.read_csv('cleaned_csv/temp.csv')
+# size = df.get('Temperature Slot 6 - Temp: CP-CPU(RAW)').size
+# print(size, type(size))
+# columns = df.columns
+# for _ in range(size):
+#     t.append(_+100)
+# print(t)
+# df.insert(2, 'cuki', t)
+# print(df)
+# print(len(columns))
