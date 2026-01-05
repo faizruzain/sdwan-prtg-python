@@ -66,7 +66,7 @@ async def get_things_done_fast(df, user_input):
             headers.insert(3, 'min')
             headers.insert(4, 'max')
         elif user_input == 5:
-            what_to_get = ['Traffic Total (Volume)(RAW)', 'raffic Total (Speed)(RAW)', 'Traffic In (Volume)(RAW)', 'Traffic Out (Volume)(RAW)']
+            what_to_get = ['Traffic Total (Volume)(RAW)', 'Traffic Total (Speed)(RAW)', 'Traffic In (Volume)(RAW)', 'Traffic Out (Volume)(RAW)']
             file_name = f'traffic_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}'
             headers.insert(1, 'traffic_id')
             headers.insert(2, 'average_traffic')
@@ -87,6 +87,7 @@ async def get_things_done_fast(df, user_input):
             gathered_val.append(r_df)
 
             if r.status_code == 200:
+                # hostnames.loc[[0], [headers]] = [r_df]
                 table.append([_[0], _[1], r_df, 'Done'])
                 print(tabulate(table, headers, tablefmt='simple_grid'))
                 print(f'{count} of {rows}')

@@ -22,30 +22,21 @@ from io import StringIO
 #     await get_things_done_fast(df, user_input)
 
 # asyncio.run(main())
+hostname_df = pd.read_csv('csv/device_id_new.csv', index_col=False)
+hostname_df = hostname_df.get(['hostname', 'cpu_id'])
+# rows = hostname_df.size
+# temporary = []
 
-data = (
-    {
-        'hostname': ['DC-VVV-SD-ICON+'],
-        'alamat': ['jalan kasuari'],
-    },
-    {
-        'orang': []
-    }
-)
-data['alamat'].append(123)
-print(data)
-# df = pd.DataFrame(data)
+# for row in range(rows):
+#     temporary.append(0)
+
+# print(temporary)
+# hostname_df.insert(1, 'temporary', temporary)
+hostname_df.loc[[0],['temporary', 'qwerty']] = [12312, 'polo']
+# hostname_df.to_csv('output_csv/temporary.csv', index=False)
+print(hostname_df)
+# print('\n')
+# df = pd.read_csv('cleaned_csv/traffic.csv', index_col=False)
+# df = df.get(['Traffic Total (Volume)(RAW)', 'Traffic Total (Speed)(RAW)', 'Traffic In (Volume)(RAW)', 'Traffic Out (Volume)(RAW)'])
+# df = df.mean()
 # print(df)
-
-
-# t = []
-# df = pd.read_csv('cleaned_csv/temp.csv')
-# size = df.get('Temperature Slot 6 - Temp: CP-CPU(RAW)').size
-# print(size, type(size))
-# columns = df.columns
-# for _ in range(size):
-#     t.append(_+100)
-# print(t)
-# df.insert(2, 'cuki', t)
-# print(df)
-# print(len(columns))
