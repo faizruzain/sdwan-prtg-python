@@ -8,20 +8,35 @@ from os import listdir
 from myModule import read_csv, get_things_done_fast
 from io import StringIO
 
-async def main():
-    print('Choose one of them!:')
-    print("""
-1 = CPU Data
-2 = Memory Data
-3 = Ping Data
-4 = Temperature Data
-5 = Traffic Data
-""")
-    user_input = int(input('Choose 1 to 5: '))
-    df = await read_csv()
-    await get_things_done_fast(df, user_input)
+# async def main():
+#     print('Choose one of them!:')
+#     print("""
+# 1 = CPU Data
+# 2 = Memory Data
+# 3 = Ping Data
+# 4 = Temperature Data
+# 5 = Traffic Data
+# """)
+#     user_input = int(input('Choose 1 to 5: '))
+#     df = await read_csv()
+#     await get_things_done_fast(df, user_input)
 
-asyncio.run(main())
+# asyncio.run(main())
+
+data = (
+    {
+        'hostname': ['DC-VVV-SD-ICON+'],
+        'alamat': ['jalan kasuari'],
+    },
+    {
+        'orang': []
+    }
+)
+data['alamat'].append(123)
+print(data)
+# df = pd.DataFrame(data)
+# print(df)
+
 
 # t = []
 # df = pd.read_csv('cleaned_csv/temp.csv')
