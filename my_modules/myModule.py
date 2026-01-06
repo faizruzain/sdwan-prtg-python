@@ -23,7 +23,6 @@ async def read_csv():
         # df = pd.read_csv('csv/device_id_new.csv', header=None)
         df = df.drop(index=[0])
         df = df.reset_index(drop=True)
-        print(df)
         return df
     except NameError:
         print(NameError)
@@ -55,7 +54,7 @@ async def get_things_done_fast(df, user_input):
             headers.insert(1, 'mem_id')
             headers.insert(2, 'average_memory')
         elif user_input == 3:
-            loc.insert(0, ['average_ping'])
+            loc.insert(0, ['Ping Time(RAW)', 'Minimum(RAW)', 'Maximum(RAW)', 'Packet Loss(RAW)'])
             what_to_get.append(['Ping Time(RAW)', 'Minimum(RAW)', 'Maximum(RAW)', 'Packet Loss(RAW)'])
             file_name = f'ping_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}'
             headers.insert(1, 'ping_id')
@@ -69,12 +68,12 @@ async def get_things_done_fast(df, user_input):
             headers.insert(3, 'min')
             headers.insert(4, 'max')
         elif user_input == 5:
-            loc.insert(0, ['average_traffic'])
+            loc.insert(0, ['Traffic Total (Volume)(RAW)', 'Traffic Total (Speed)(RAW)', 'Traffic In (Volume)(RAW)', 'Traffic Out (Volume)(RAW)'])
             what_to_get.append(['Traffic Total (Volume)(RAW)', 'Traffic Total (Speed)(RAW)', 'Traffic In (Volume)(RAW)', 'Traffic Out (Volume)(RAW)'])
             file_name = f'traffic_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}'
             headers.insert(1, 'traffic_id')
             headers.insert(2, 'average_traffic')
-        gathered_val = []
+        # gathered_val = []
         for _ in task_lists.itertuples():
             # make API req
             url2 = f'https://afr-sdwan.free.beeceptor.com/api/prtg?id={_[2]}'
@@ -87,11 +86,10 @@ async def get_things_done_fast(df, user_input):
                 r_df = pd.read_csv(r_f)
                 r_df = r_df.get(what_to_get[0])
                 r_df = round(r_df.mean())
-                gathered_val.append(r_df)
+                # gathered_val.append(r_df)
                 data = []                
                 for d in r_df:
                     data.append(d)
-                print(data)
                 hostnames.loc[_[0], loc[0]] = data
                 table.append([_[1], _[2], r_df, 'Done'])
                 print(tabulate(table, headers, tablefmt='simple_grid'))
@@ -114,5 +112,5 @@ async def get_things_done_fast(df, user_input):
         print('All Done')
     finally:
         # saving data to csv regardless success or error
-        print(hostnames)
-        # hostnames.to_csv(f'output_csv/{file_name}.csv', index_label=None)
+        # print(hostnames)
+        hostnames.to_csv(f'output_csv/{file_name}.csv', index=False)
