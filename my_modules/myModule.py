@@ -3,11 +3,13 @@ import requests
 import random
 import os
 import datetime
+import urllib3
 from dotenv import load_dotenv
 from tabulate import tabulate
 from io import StringIO
 
 load_dotenv()
+urllib3.disable_warnings()
 
 """
 1 = CPU Data
@@ -19,8 +21,8 @@ load_dotenv()
 
 async def read_csv():
     try:
-        df = pd.read_csv('csv/device_id_dev.csv', header=None)
-        # df = pd.read_csv('csv/device_id_new.csv', header=None)
+        # df = pd.read_csv('csv/device_id_dev.csv', header=None)
+        df = pd.read_csv('csv/device_id_new.csv', header=None)
         df = df.drop(index=[0])
         df = df.reset_index(drop=True)
         return df
@@ -77,11 +79,13 @@ async def get_things_done_fast(df, user_input):
         for _ in task_lists.itertuples():
             # make API req
             url2 = f'https://afr-sdwan.free.beeceptor.com/api/prtg?id={_[2]}'
-            url1 = f'https://10.164.1.101/api/historicdata.csv?id={_[2]}&avg=86400&sdate=2025-12-01-00-00-00&edate=2025-12-30-23-59-59&apitoken={my_token}'
+            url1 = f'https://10.164.1.101/api/historicdata.csv?id={_[2]}&avg=86400&sdate=2025-06-01-00-00-00&edate=2025-12-31-23-59-59&apitoken={my_token}'
             url3 = f'https://jsonplaceholder.typicode.com/users/9'
             # r = requests.get(url, verify=False)
-            r = requests.get(url2, timeout=10)
-            if r.status_code == 200 and r.headers['Content-Type'] == 'text/csv;charset=utf-8':
+            r = requests.get(url1, timeout=60, verify=False)
+            # print(r.headers)
+            # print(r.status_code)
+            if r.status_code == 200 and r.headers['Content-Type'] == 'text/csv; charset=UTF-8':
                 r_f = StringIO(r.text)
                 r_df = pd.read_csv(r_f)
                 r_df = r_df.get(what_to_get[0])
@@ -96,7 +100,7 @@ async def get_things_done_fast(df, user_input):
                 print(f'{count} of {rows}')
                 count += 1
                 print('\n')
-            elif r.status_code != 200 or r.headers['Content-Type'] != 'text/csv;charset=utf-8':
+            elif r.status_code != 200 or r.headers['Content-Type'] != 'text/csv; charset=UTF-8':
                 table.append([_[1], _[2], 'NaN', 'Skipped'])
                 print(tabulate(table, headers, tablefmt='simple_grid'))
                 print(f'{count} of {rows}')
