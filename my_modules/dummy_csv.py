@@ -1,6 +1,7 @@
 import pandas as pd
 import random
 
+
 data = (
     {
         'CPU 7(RAW)': 0,
@@ -19,30 +20,31 @@ data = (
 
 data_df = pd.DataFrame(data, index=[0])
 
-for column in data_df.columns:
-    for row in range(30):
-        if column == 'Ping Time(RAW)' or column == 'Minimum(RAW)' or column == 'Maximum(RAW)':
-            data_df.loc[row, column] = random.randint(3, 5)
-        elif column == 'Packet Loss(RAW)':
-            data_df.loc[row, column] = random.randint(1, 4)
-        elif column == 'Temperature Slot 6 - Temp: CP-CPU(RAW)':
-            data_df.loc[row, column] = random.randint(30, 39)
-        elif column == 'CPU 7(RAW)':
-            data_df.loc[row, column] = random.randint(1, 100)
-        else:
-            data_df.loc[row, column] = random.randint(1000, 10000)
-
-print(data_df)
-
-test = pd.read_csv('https://afr-sdwan.free.beeceptor.com/api/prtg?id=')
-print(test)
-# data_df.to_csv('output_csv/prtg_dummy.csv', index=False)
+for i in range(3):
+    for column in data_df.columns:
+        for row in range(30):
+            if column == 'Ping Time(RAW)' or column == 'Minimum(RAW)' or column == 'Maximum(RAW)':
+                data_df.loc[row, column] = random.randint(3, 5)
+            elif column == 'Packet Loss(RAW)':
+                data_df.loc[row, column] = random.randint(1, 4)
+            elif column == 'Temperature Slot 6 - Temp: CP-CPU(RAW)':
+                data_df.loc[row, column] = random.randint(30, 39)
+            elif column == 'CPU 7(RAW)':
+                data_df.loc[row, column] = random.randint(1, 100)
+            else:
+                data_df.loc[row, column] = random.randint(1000, 10000)
+    print(data_df)
+    data_df.to_csv(f'output_csv/prtg_dummy_{i}.csv', index=False)
 
 
 
+# url = f'/api/prtg?cpu_id=55723&mem_id=55724&ping_id=55722&temp_id=55725&traffic_id=55726'
+# url = f'/api/prtg?cpu_id=55687&mem_id=55688&ping_id=55686&temp_id=55689&traffic_id=55690'
+# url = f'/api/prtg?cpu_id=52839&mem_id=52840&ping_id=52849&temp_id=52841&traffic_id=52843'
 
+# x = 'csv' in 'text/CSV; charset=UTF-8'.lower()
 
-
+# print(x)
 
 
 
