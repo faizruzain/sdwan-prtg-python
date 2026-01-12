@@ -14,6 +14,10 @@ async def main():
 6 = DUDUK MANIS ONGKANG - ONGKANG KAKI
 """)
     user_input = int(input('Choose 1 to 6: '))
+    sdate = input('Start Date [yyyy-mm-dd-hh-mm-ss]: ')
+    print(sdate)
+    edate = input('End Date [yyyy-mm-dd-hh-mm-ss]: ')
+    print(edate)
     df = await read_csv()
     if user_input == 6:
         for i in range(5):
