@@ -61,7 +61,7 @@ async def get_things_done_fast(df, user_input):
             headers.insert(1, 'ping_id')
             headers.insert(2, 'average_ping')
         elif user_input == 4:
-            loc.insert(0, ['average_temperature', 'min', 'max'])
+            loc.insert(0, ['min', 'max', 'average_temperature'])
             what_to_get.append(['Temperature Slot 6 - Temp: CP-CPU(RAW)'])
             file_name = f'temperature_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}'
             headers.insert(1, 'temp_id')
@@ -74,26 +74,28 @@ async def get_things_done_fast(df, user_input):
             file_name = f'traffic_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}'
             headers.insert(1, 'traffic_id')
             headers.insert(2, 'average_traffic')
-        # gathered_val = []
         for _ in task_lists.itertuples():
             # make API req
-            url2 = f'https://afr-sdwan.free.beeceptor.com/api/prtg?cpu_id={_[2]}&mem_id={_[2]}&ping_id={_[2]}&temp_id={_[2]}&traffic_id={_[2]}'
+            url2 = f'https://afr-sdwan.free.beeceptor.com/api/prtg/id/{_[2]}'
             url1 = f'https://10.164.1.101/api/historicdata.csv?id={_[2]}&avg=86400&sdate=2025-06-01-00-00-00&edate=2025-12-31-23-59-59&apitoken={my_token}'
             url3 = f'https://jsonplaceholder.typicode.com/users/9'
             # r = requests.get(url, verify=False)
             r = requests.get(url2, timeout=60, verify=False)
-            # print(r.headers)
-            # print(r.status_code)
             if r.status_code == 200 and 'csv' in r.headers['Content-Type'].lower():
+                data = []
                 r_f = StringIO(r.text)
                 r_df = pd.read_csv(r_f)
                 r_df = r_df.get(what_to_get[0])
-                r_df = round(r_df.mean())
-                # gathered_val.append(r_df)
-                data = []                
+                if user_input == 4: # Temperature
+                    min = r_df.min().iloc[0]
+                    max = r_df.max().iloc[0]
+                    data.append(min)
+                    data.append(max)
+                    print(data)
+                r_df = round(r_df.mean())                
                 for d in r_df:
                     data.append(d)
-                hostnames.loc[_[0], loc[0]] = r_df
+                hostnames.loc[_[0], loc[0]] = data
                 table.append([_[1], _[2], r_df, 'Done'])
                 print(tabulate(table, headers, tablefmt='simple_grid'))
                 print(f'{count} of {rows}')
