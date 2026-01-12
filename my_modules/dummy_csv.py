@@ -2,39 +2,45 @@ import pandas as pd
 import random
 
 
-data = (
-    {
-        'CPU 7(RAW)': 0,
-        'Percent Available Memory 1 (Processor)(RAW)': 0,
-        'Ping Time(RAW)': 0,
-        'Minimum(RAW)': 0,
-        'Maximum(RAW)': 0,
-        'Packet Loss(RAW)': 0,
-        'Temperature Slot 6 - Temp: CP-CPU(RAW)': 0,
-        'Traffic Total (Volume)(RAW)': 0,
-        'Traffic Total (Speed)(RAW)': 0,
-        'Traffic In (Volume)(RAW)': 0,
-        'Traffic Out (Volume)(RAW)': 0
-    }
-)
+df = pd.read_csv('cleaned_csv/temp.csv')
+df = df.get(['Temperature Slot 6 - Temp: CP-CPU(RAW)'])
+print(df.max().iloc[0])
 
-data_df = pd.DataFrame(data, index=[0])
+# ===============================================================
 
-for i in range(3):
-    for column in data_df.columns:
-        for row in range(30):
-            if column == 'Ping Time(RAW)' or column == 'Minimum(RAW)' or column == 'Maximum(RAW)':
-                data_df.loc[row, column] = random.randint(3, 5)
-            elif column == 'Packet Loss(RAW)':
-                data_df.loc[row, column] = random.randint(1, 4)
-            elif column == 'Temperature Slot 6 - Temp: CP-CPU(RAW)':
-                data_df.loc[row, column] = random.randint(30, 39)
-            elif column == 'CPU 7(RAW)':
-                data_df.loc[row, column] = random.randint(1, 100)
-            else:
-                data_df.loc[row, column] = random.randint(1000, 10000)
-    print(data_df)
-    data_df.to_csv(f'output_csv/prtg_dummy_{i}.csv', index=False)
+# data = (
+#     {
+#         'CPU 7(RAW)': 0,
+#         'Percent Available Memory 1 (Processor)(RAW)': 0,
+#         'Ping Time(RAW)': 0,
+#         'Minimum(RAW)': 0,
+#         'Maximum(RAW)': 0,
+#         'Packet Loss(RAW)': 0,
+#         'Temperature Slot 6 - Temp: CP-CPU(RAW)': 0,
+#         'Traffic Total (Volume)(RAW)': 0,
+#         'Traffic Total (Speed)(RAW)': 0,
+#         'Traffic In (Volume)(RAW)': 0,
+#         'Traffic Out (Volume)(RAW)': 0
+#     }
+# )
+
+# data_df = pd.DataFrame(data, index=[0])
+
+# for i in range(3):
+#     for column in data_df.columns:
+#         for row in range(30):
+#             if column == 'Ping Time(RAW)' or column == 'Minimum(RAW)' or column == 'Maximum(RAW)':
+#                 data_df.loc[row, column] = random.randint(3, 5)
+#             elif column == 'Packet Loss(RAW)':
+#                 data_df.loc[row, column] = random.randint(1, 4)
+#             elif column == 'Temperature Slot 6 - Temp: CP-CPU(RAW)':
+#                 data_df.loc[row, column] = random.randint(30, 39)
+#             elif column == 'CPU 7(RAW)':
+#                 data_df.loc[row, column] = random.randint(1, 100)
+#             else:
+#                 data_df.loc[row, column] = random.randint(1000, 10000)
+#     print(data_df)
+#     data_df.to_csv(f'output_csv/prtg_dummy_{i}.csv', index=False)
 
 
 
@@ -46,26 +52,7 @@ for i in range(3):
 
 # print(x)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# ===============================================================
 
 # string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 # serial_number = ''
