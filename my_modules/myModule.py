@@ -91,7 +91,6 @@ async def get_things_done_fast(df, user_input):
                     max = r_df.max().iloc[0]
                     data.append(min)
                     data.append(max)
-                    print(data)
                 r_df = round(r_df.mean())                
                 for d in r_df:
                     data.append(d)
