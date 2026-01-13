@@ -28,7 +28,7 @@ async def read_csv():
     except NameError:
         print(NameError)
 
-async def get_things_done_fast(df, user_input):
+async def get_things_done_fast(df, user_input, sdate, edate):
     try:
         print(f'User chose: {user_input}')
         my_token = os.getenv("API_KEY")
@@ -77,10 +77,10 @@ async def get_things_done_fast(df, user_input):
         for _ in task_lists.itertuples():
             # make API req
             url2 = f'https://afr-sdwan.free.beeceptor.com/api/prtg/id/{_[2]}'
-            url1 = f'https://10.164.1.101/api/historicdata.csv?id={_[2]}&avg=86400&sdate=2025-06-01-00-00-00&edate=2025-12-31-23-59-59&apitoken={my_token}'
+            url1 = f'https://10.164.1.101/api/historicdata.csv?id={_[2]}&avg=86400&sdate={sdate}&edate={edate}&apitoken={my_token}'
             url3 = f'https://jsonplaceholder.typicode.com/users/9'
             # r = requests.get(url, verify=False)
-            r = requests.get(url2, timeout=60, verify=False)
+            r = requests.get(url1, timeout=60, verify=False)
             if r.status_code == 200 and 'csv' in r.headers['Content-Type'].lower():
                 data = []
                 r_f = StringIO(r.text)

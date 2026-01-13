@@ -21,8 +21,8 @@ async def main():
     df = await read_csv()
     if user_input == 6:
         for i in range(5):
-            await get_things_done_fast(df, i+1)
+            await get_things_done_fast(df, i+1, sdate, edate)
     else:
-        await get_things_done_fast(df, user_input)
+        await get_things_done_fast(df, user_input, sdate, edate)
 
 asyncio.run(main())
