@@ -18,13 +18,19 @@ urllib3.disable_warnings()
 5 = Traffic Data
 """
 
-async def read_csv():
+async def read_csv(user_input):
     try:
-        df = pd.read_csv('csv/device_id_dev.csv', header=None)
-        # df = pd.read_csv('csv/device_id_new.csv', header=None)
-        df = df.drop(index=[0])
-        df = df.reset_index(drop=True)
-        return df
+        if user_input == 7:
+            df = pd.read_csv('csv/dwdm-per-port.csv')
+            return df
+        elif user_input == 8:
+            pass
+        else:
+            df = pd.read_csv('csv/device_id_dev.csv', header=None)
+            # df = pd.read_csv('csv/device_id_new.csv', header=None)
+            df = df.drop(index=[0])
+            df = df.reset_index(drop=True)
+            return df
     except NameError:
         print(NameError)
 
@@ -74,6 +80,7 @@ async def get_things_done_fast(df, user_input, sdate, edate):
             file_name = f'traffic_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')}'
             headers.insert(1, 'traffic_id')
             headers.insert(2, 'average_traffic')
+            
         for _ in task_lists.itertuples():
             # make API req
             url2 = f'https://afr-sdwan.free.beeceptor.com/api/prtg/id/{_[2]}'
@@ -118,3 +125,10 @@ async def get_things_done_fast(df, user_input, sdate, edate):
         # saving data to csv regardless success or error
         # print(hostnames)
         hostnames.to_csv(f'output_csv/{file_name}.csv', index=False)
+
+async def dwdm_telkom(df):
+    try:
+        print(df)
+
+    except NameError:
+        print(NameError)
