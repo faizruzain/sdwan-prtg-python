@@ -128,7 +128,21 @@ async def get_things_done_fast(df, user_input, sdate, edate):
 
 async def dwdm_telkom(df):
     try:
-        print(df)
+        my_token = os.getenv("API_KEY")
+        my_api_key = os.getenv("API_KEY_IMG")
+        payloads = {'X-Api-Key': my_api_key}
+        url = 'https://api.api-ninjas.com/v1/randomimage'
+        url2 = 'https://picsum.photos/2000'
+        
+        for row in df.itertuples():
+            print(row)
+
+        r = requests.get(url2, timeout=60, params=payloads, stream=True)
+        r.raise_for_status()
+        with open('test.png', 'wb') as out_file:
+            for chunk in r.iter_content(chunk_size=8192):
+                if chunk:
+                    out_file.write(chunk)
 
     except NameError:
         print(NameError)
