@@ -126,23 +126,30 @@ async def get_things_done_fast(df, user_input, sdate, edate):
         # print(hostnames)
         hostnames.to_csv(f'output_csv/{file_name}.csv', index=False)
 
-async def dwdm_telkom(df):
+async def dwdm_telkom(df, sdate, edate):
     try:
         my_token = os.getenv("API_KEY")
         my_api_key = os.getenv("API_KEY_IMG")
         payloads = {'X-Api-Key': my_api_key}
-        url = 'https://api.api-ninjas.com/v1/randomimage'
+        url = f"https://10.162.162.161:8443/chart.png?id=objectid&avg=15&sdate=2023-01-20-00-00-00&edate=2023-01-21-00-00-00&width=850&height=270&graphstyling=baseFontSize='12'%20showLegend='1'&graphid=-1"
         url2 = 'https://picsum.photos/2000'
         
         for row in df.itertuples():
-            print(row)
+            port_name = row[5].replace("/", "_")
+            traffic_id = row[9]
+            url = f"https://10.162.162.161:8443/chart.png?id={traffic_id}&avg=15&sdate={sdate}&edate={edate}&width=850&height=270&graphstyling=baseFontSize='12'%20showLegend='1'&graphid=-1&apitoken={my_token}"
+            
+            r = requests.get(url2, timeout=60, params=payloads, stream=True)
+            r.raise_for_status()
+            with open(f'DWDM Telkom/{port_name}.png', 'wb') as out_file:
+                for chunk in r.iter_content(chunk_size=8192):
+                    if chunk:
+                        out_file.write(chunk)
 
-        r = requests.get(url2, timeout=60, params=payloads, stream=True)
-        r.raise_for_status()
-        with open('test.png', 'wb') as out_file:
-            for chunk in r.iter_content(chunk_size=8192):
-                if chunk:
-                    out_file.write(chunk)
+            print(f'{port_name}.png done')
+            # print(f'port name: {port_name}\ntraffic id: {traffic_id}\nstart date: {sdate}\nend date: {edate}\nurl: {url}')
+
+        
 
     except NameError:
         print(NameError)

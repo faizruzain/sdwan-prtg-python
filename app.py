@@ -15,7 +15,7 @@ async def main():
 7 = DWDM Telkom Per Ports
 8 = DWDM Telkom Existing
 """)
-    user_input = int(input('Choose 1 to 6: '))
+    user_input = int(input('Choose 1 to 8: '))
     sdate = input('Start Date [yyyy-mm-dd-hh-mm-ss]: ')
     print(sdate)
     edate = input('End Date [yyyy-mm-dd-hh-mm-ss]: ')
@@ -26,7 +26,7 @@ async def main():
         for i in range(5):
             await get_things_done_fast(df, i+1, sdate, edate)
     elif user_input == 7:
-        await dwdm_telkom(df)
+        await dwdm_telkom(df, sdate, edate)
     else:
         await get_things_done_fast(df, user_input, sdate, edate)
 
