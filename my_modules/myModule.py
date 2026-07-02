@@ -21,10 +21,11 @@ urllib3.disable_warnings()
 async def read_csv(user_input):
     try:
         if user_input == 7:
-            df = pd.read_csv('csv/dwdm-per-port.csv')
+            df = pd.read_csv('csv/dwdm_per_port.csv')
             return df
         elif user_input == 8:
-            pass
+            df = pd.read_csv('csv/dwdm_existing.csv')
+            return df
         else:
             df = pd.read_csv('csv/device_id_dev.csv', header=None)
             # df = pd.read_csv('csv/device_id_new.csv', header=None)
@@ -141,7 +142,7 @@ async def dwdm_telkom(df, sdate, edate):
             
             r = requests.get(url, timeout=60, params=payloads, stream=True, verify=False)
             r.raise_for_status()
-            with open(f'DWDM Telkom/7. Mei 2026/{port_name}.png', 'wb') as out_file:
+            with open(f'DWDM Telkom/Juni 2026/{port_name}.png', 'wb') as out_file:
                 for chunk in r.iter_content(chunk_size=8192):
                     if chunk:
                         out_file.write(chunk)

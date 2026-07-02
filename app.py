@@ -25,7 +25,7 @@ async def main():
     if user_input == 6:
         for i in range(5):
             await get_things_done_fast(df, i+1, sdate, edate)
-    elif user_input == 7:
+    elif user_input == 7 or user_input == 8:
         await dwdm_telkom(df, sdate, edate)
     else:
         await get_things_done_fast(df, user_input, sdate, edate)
