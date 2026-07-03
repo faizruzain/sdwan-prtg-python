@@ -130,27 +130,22 @@ async def get_things_done_fast(df, user_input, sdate, edate):
 async def dwdm_telkom(df, sdate, edate):
     try:
         my_token = os.getenv("API_KEY_PRTG2")
-        my_api_key = os.getenv("API_KEY_IMG")
-        payloads = {'X-Api-Key': my_api_key}
-        # url = f"https://10.162.162.161:8443/chart.png?id=objectid&avg=15&sdate=2023-01-20-00-00-00&edate=2023-01-21-00-00-00&width=850&height=270&graphstyling=baseFontSize='12'%20showLegend='1'&graphid=-1"
-        url2 = 'https://picsum.photos/2000'
+        df = df.get(['Port BI', 'Traffic ID'])
         
         for row in df.itertuples():
-            port_name = row[5].replace("/", "_")
-            traffic_id = row[9]
+            port_name = row[1].replace("/", "_")
+            traffic_id = row[2]
             url = f"https://10.162.162.161:8443/chart.png?id={traffic_id}&avg=3600&sdate={sdate}&edate={edate}&width=850&height=270&graphstyling=baseFontSize='12'%20showLegend='1'&graphid=-1&apitoken={my_token}"
             
-            r = requests.get(url, timeout=60, params=payloads, stream=True, verify=False)
+            r = requests.get(url, timeout=60, stream=True, verify=False)
             r.raise_for_status()
-            with open(f'DWDM Telkom/Juni 2026/{port_name}.png', 'wb') as out_file:
+            with open(f'DWDM Telkom/Eksisting Juni 2026/{port_name}.png', 'wb') as out_file:
                 for chunk in r.iter_content(chunk_size=8192):
                     if chunk:
                         out_file.write(chunk)
 
             print(f'{port_name}.png done')
             # print(f'port name: {port_name}\ntraffic id: {traffic_id}\nstart date: {sdate}\nend date: {edate}\nurl: {url}')
-
-        
-
+  
     except NameError:
         print(NameError)
